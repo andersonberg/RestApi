@@ -1,4 +1,4 @@
 RestApi
 =======
 
-Interface Rest utilizando o Django com Tasypie
+Interface Rest utilizando o Django com Tastypie
