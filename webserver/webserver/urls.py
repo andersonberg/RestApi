@@ -1,12 +1,11 @@
 from django.conf.urls import patterns, include, url
+from webserver.restapi.api import RestApiResource
 
 from django.contrib import admin
 admin.autodiscover()
+restapi_resource = RestApiResource()
 
 urlpatterns = patterns('',
-    # Examples:
-    # url(r'^$', 'webserver.views.home', name='home'),
-    # url(r'^blog/', include('blog.urls')),
-
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^api/', include(restapi_resource.urls)),
 )
