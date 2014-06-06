@@ -7,6 +7,8 @@ from webserver.restapi.models import RestApi, Alternativa
 
 #Classe resource representando o model RestApi
 class RestApiResource(ModelResource):
+    #relaciona objetos da classe AlternativaResource com a classe RestApiResource
+    alternativas = fields.ToManyField('webserver.restapi.api.AlternativaResource', 'alternativas', related_name='alternativa', full=True)
     class Meta:
         queryset = RestApi.objects.all()
         resource_name = 'restapi'
@@ -25,3 +27,4 @@ class AlternativaResource(ModelResource):
         queryset = Alternativa.objects.all()
         resource_name = 'alternativa'
         authorization = Authorization()
+        excludes = ['id', 'resource_uri']
