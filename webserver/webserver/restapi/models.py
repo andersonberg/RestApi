@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.text import slugify
 
 class Alternativa(models.Model):
     url = models.URLField()
@@ -13,3 +14,8 @@ class RestApi(models.Model):
     def __str__(self):
         return self.name
 
+    #muda o padrão do slug na hora de salvar
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name.replace(" ","_"))[:50]
+            return super(RestApi, self).save(*args, **kwargs)
