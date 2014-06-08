@@ -3,12 +3,13 @@ from tastypie.resources import ModelResource
 from tastypie.constants import ALL
 from tastypie.authorization import Authorization
 from tastypie import fields
-from webserver.restapi.models import RestApi, Alternativa
+from webserver.restapi.models import RestApi, Alternativa, User
 
 #Classe resource representando o model RestApi
 class RestApiResource(ModelResource):
     #relaciona objetos da classe AlternativaResource com a classe RestApiResource
     alternativas = fields.ToManyField('webserver.restapi.api.AlternativaResource', 'alternativas', related_name='alternativa', full=True)
+    users = fields.ToManyField('webserver.restapi.api.UserResource', 'users', full=True)
     class Meta:
         queryset = RestApi.objects.all()
         resource_name = 'restapi'
@@ -28,3 +29,11 @@ class AlternativaResource(ModelResource):
         resource_name = 'alternativa'
         authorization = Authorization()
         excludes = ['id', 'resource_uri']
+
+class UserResource(ModelResource):
+    alternativa = fields.ForeignKey(AlternativaResource, 'alternativa', full=True)
+    class Meta:
+        queryset = User.objects.all()
+        resource_name = 'user'
+        authorization = Authorization()
+        filtering = {'username': ALL}
