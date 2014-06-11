@@ -1,11 +1,13 @@
 from django.conf.urls import patterns, include, url
-from webserver.restapi.api import RestApiResource
+from webserver.restapi.api import ExperimentoResource, UserResource
 
 from django.contrib import admin
 admin.autodiscover()
-restapi_resource = RestApiResource()
+experimento_resource = ExperimentoResource()
+user_resource = UserResource()
 
 urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^api/', include(restapi_resource.urls)),
+    url(r'^api/', include(experimento_resource.urls)),
+    url(r'^api/', include(user_resource.urls)),
 )
