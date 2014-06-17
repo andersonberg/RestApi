@@ -9,7 +9,7 @@ class Alternativa(models.Model):
 
 class User(models.Model):
     username = models.CharField(max_length=30)
-    alternativa = models.ForeignKey(Alternativa, null=True, blank=True)
+    alternativa = models.OneToOneField(Alternativa, null=True)
     slug = models.SlugField()
 
     def __str__(self):
@@ -19,7 +19,7 @@ class User(models.Model):
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.username.replace(" ", "_"))[:50]
-            return super(User, self).save(*args, **kwargs)
+        return super(User, self).save(*args, **kwargs)
 
 
 class Experimento(models.Model):
@@ -36,4 +36,4 @@ class Experimento(models.Model):
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.name.replace(" ", "_"))[:50]
-            return super(Experimento, self).save(*args, **kwargs)
+        return super(Experimento, self).save(*args, **kwargs)

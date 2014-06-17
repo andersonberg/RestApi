@@ -20,26 +20,21 @@ import random
 #
 
 
-def pick_alternativa(list):
-    choice = random.choice(list)
-    alt_result = choice
-    return alt_result
+def pick_alternativa():
+    alternativas = Alternativa.objects.all()
+    choice = random.choice(alternativas)
+    return choice
 
 
 def get_query_dict(request):
     index = int(request.GET.get('id'))
     user = User.objects.get(id=index)
+    ar = AlternativaResource()
     if user.alternativa is None:
-        alternativas = Alternativa.objects.all()
-        sorteio = pick_alternativa(alternativas)
+        sorteio = pick_alternativa()
         user.alternativa = sorteio
         user.save()
 
-        ar = AlternativaResource()
-        ar_bundle = ar.build_bundle(obj=user.alternativa, request=request)
+    ar_bundle = ar.build_bundle(obj=user.alternativa, request=request)
 
-        return HttpResponse(ar.serialize(request, ar.full_dehydrate(ar_bundle), format='application/json'))
-    else:
-        ar = AlternativaResource()
-        ar_bundle = ar.build_bundle(obj=user.alternativa, request=request)
-        return HttpResponse(ar.serialize(request, ar.full_dehydrate(ar_bundle), format='application/json'))
+    return HttpResponse(ar.serialize(request, ar.full_dehydrate(ar_bundle), format='application/json'))
