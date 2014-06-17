@@ -9,7 +9,7 @@ class Alternativa(models.Model):
 
 class User(models.Model):
     username = models.CharField(max_length=30)
-    alternativa = models.OneToOneField(Alternativa, null=True)
+    alternativa = models.ForeignKey(Alternativa, null=True, blank=True)
     slug = models.SlugField()
 
     def __str__(self):

@@ -4,6 +4,7 @@ from tastypie.constants import ALL
 from tastypie.authorization import Authorization
 from tastypie import fields
 from webserver.restapi.models import Experimento, Alternativa, User
+# from webserver.restapi import views
 
 
 class ExperimentoResource(ModelResource):
@@ -24,6 +25,7 @@ class ExperimentoResource(ModelResource):
     def prepend_urls(self):
         return [
             url(r'^(?P<resource_name>%s)/(?P<slug>[\w\.-]+)/$' % self._meta.resource_name, self.wrap_view('dispatch_detail'), name='api_dispatch_detail'),
+            url(r'^experimento/$', 'webserver.restapi.views.get_query_dict')
         ]
 
 
@@ -36,7 +38,7 @@ class AlternativaResource(ModelResource):
 
 
 class UserResource(ModelResource):
-    alternativa = fields.ForeignKey(AlternativaResource, 'alternativa', full=True)
+    alternativa = fields.ForeignKey(AlternativaResource, 'alternativa', full=True, null=True)
 
     class Meta:
         queryset = User.objects.all()
