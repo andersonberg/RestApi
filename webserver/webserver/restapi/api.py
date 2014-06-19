@@ -44,7 +44,7 @@ class UserResource(ModelResource):
         queryset = User.objects.all()
         resource_name = 'user'
         authorization = Authorization()
-        filtering = {'username': ALL}
+        filtering = {'username': ALL, 'slug':ALL}
 
     def prepend_urls(self):
         return [
