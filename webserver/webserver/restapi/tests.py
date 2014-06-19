@@ -24,13 +24,12 @@ class UserResourceTest(ResourceTestCase):
         self.assertValidJSONResponse(resp)
         self.assertEqual(self.deserialize(resp)['username'], 'Anderson')
 
-    def test_put_detail(self):
+    def test_patch_detail(self):
         original_data = self.deserialize(self.api_client.get(self.detail_url, format='json'))
         new_data = original_data.copy()
         new_data['username'] = 'Anderson Berg'
 
         self.assertEqual(User.objects.count(), 1)
-        self.assertHttpAccepted(self.api_client.put(self.detail_url, format='json', data=new_data))
+        self.assertHttpAccepted(self.api_client.patch(self.detail_url, format='json', data=new_data))
         self.assertEqual(User.objects.count(), 1)
         self.assertEqual(User.objects.get(id=1).username, 'Anderson Berg')
-        self.assertEqual(User.objects.get(id=1).slug, 'anderson_berg')
