@@ -1,7 +1,7 @@
 from django.test import TestCase
 from tastypie.test import ResourceTestCase
 from webserver.restapi.api import *
-from webserver.restapi.models import User
+from webserver.restapi.models import User, Experimento, Alternativa
 
 
 class UserResourceTest(ResourceTestCase):
@@ -33,3 +33,40 @@ class UserResourceTest(ResourceTestCase):
         self.assertHttpAccepted(self.api_client.patch(self.detail_url, format='json', data=new_data))
         self.assertEqual(User.objects.count(), 1)
         self.assertEqual(User.objects.get(id=1).username, 'Anderson Berg')
+
+
+class ExperimentoResourceTest(ResourceTestCase):
+
+    def setUp(self):
+        super(ExperimentoResourceTest, self).setUp()
+
+        alternativa_1 = {'url': 'testeA.com', 'peso': 1}
+        alternativa_2 = {'url': 'testeB.com', 'peso': 2}
+
+        self.post_data = {'name': 'Experimento 1', 'alternativas': [alternativa_1, alternativa_2]}
+        self.api_client.post('/api/experimento/', format='json', data=self.post_data)
+        self.experimento_1 = Experimento.objects.get(slug='experimento_1')
+        self.detail_url = '/api/experimento/{0}/'.format(self.experimento_1.slug)
+
+    def test_post_list(self):
+        alternativaC = {'url': 'testeC.com', 'peso': 1}
+        alternativaD = {'url': 'testeD.com', 'peso': 2}
+
+        experimento_2 = {'name': 'Experimento 2', 'alternativas': [alternativaC, alternativaD]}
+        self.assertHttpCreated(self.api_client.post('/api/experimento/', format='json', data=experimento_2))
+        self.assertEqual(Experimento.objects.count(), 2)
+
+    def test_get_detail_json(self):
+        resp = self.api_client.get(self.detail_url, format='json')
+        self.assertValidJSONResponse(resp)
+        self.assertEqual(self.deserialize(resp)['name'], 'Experimento 1')
+
+    def test_patch_detail(self):
+        original_data = self.deserialize(self.api_client.get(self.detail_url, format='json'))
+        new_data = original_data.copy()
+        new_data['name'] = 'Experimento 3'
+
+        self.assertEqual(Experimento.objects.count(), 1)
+        self.assertHttpAccepted(self.api_client.patch(self.detail_url, format='json', data=new_data))
+        self.assertEqual(Experimento.objects.count(), 1)
+        self.assertEqual(Experimento.objects.get(id=1).name, 'Experimento 3')

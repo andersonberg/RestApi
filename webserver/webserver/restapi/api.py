@@ -25,7 +25,7 @@ class ExperimentoResource(ModelResource):
     def prepend_urls(self):
         return [
             url(r'^(?P<resource_name>%s)/(?P<slug>[\w\.-]+)/$' % self._meta.resource_name, self.wrap_view('dispatch_detail'), name='api_dispatch_detail'),
-            url(r'^experimento/$', 'webserver.restapi.views.get_query_dict')
+            url(r'^experimento/(?P<slug>[\w\.-]+)/user/$', 'webserver.restapi.views.get_query_dict')
         ]
 
 
@@ -44,7 +44,7 @@ class UserResource(ModelResource):
         queryset = User.objects.all()
         resource_name = 'user'
         authorization = Authorization()
-        filtering = {'username': ALL, 'slug':ALL}
+        filtering = {'username': ALL, 'slug': ALL}
 
     def prepend_urls(self):
         return [

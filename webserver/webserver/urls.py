@@ -10,5 +10,4 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
     url(r'^api/', include(experimento_resource.urls)),
     url(r'^api/', include(user_resource.urls)),
-    url(r'^experimento/$', 'webserver.restapi.views.get_query_dict')
 )
