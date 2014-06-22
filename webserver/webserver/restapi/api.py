@@ -12,7 +12,6 @@ class ExperimentoResource(ModelResource):
 
     #relaciona objetos da classe AlternativaResource com a classe ExperimentoResource
     alternativas = fields.ToManyField('webserver.restapi.api.AlternativaResource', 'alternativas', related_name='alternativa', full=True)
-    #users = fields.ToManyField('webserver.restapi.api.UserResource', 'users', full=True)
 
     class Meta:
         queryset = Experimento.objects.all()

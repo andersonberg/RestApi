@@ -5,6 +5,7 @@ from django.utils.text import slugify
 class Alternativa(models.Model):
     url = models.URLField()
     peso = models.IntegerField()
+    sorteios = models.IntegerField(null=True)
 
 
 class User(models.Model):
