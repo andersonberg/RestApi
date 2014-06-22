@@ -34,6 +34,17 @@ class UserResourceTest(ResourceTestCase):
         self.assertEqual(User.objects.count(), 1)
         self.assertEqual(User.objects.get(id=1).username, 'Anderson Berg')
 
+    def test_put_list(self):
+        original_data = self.deserialize(self.api_client.get(self.detail_url, format='json'))
+        new_data = original_data.copy()
+        new_data['username'] = 'Anderson Dantas'
+        new_data['alternativa'] = {'url': 'testeE.com', 'peso': 4}
+        new_data['slug'] = 'anderson_dantas'
+
+        self.assertHttpAccepted(self.api_client.patch(self.detail_url, format='json', data=new_data))
+        self.assertEqual(User.objects.get(id=1).username, 'Anderson Dantas')
+        self.assertEqual(User.objects.get(id=1).slug, 'anderson_dantas')
+
 
 class ExperimentoResourceTest(ResourceTestCase):
 
@@ -49,10 +60,10 @@ class ExperimentoResourceTest(ResourceTestCase):
         self.detail_url = '/api/experimento/{0}/'.format(self.experimento_1.slug)
 
     def test_post_list(self):
-        alternativaC = {'url': 'testeC.com', 'peso': 1}
-        alternativaD = {'url': 'testeD.com', 'peso': 2}
+        alternativa_c = {'url': 'testeC.com', 'peso': 1}
+        alternativa_d = {'url': 'testeD.com', 'peso': 2}
 
-        experimento_2 = {'name': 'Experimento 2', 'alternativas': [alternativaC, alternativaD]}
+        experimento_2 = {'name': 'Experimento 2', 'alternativas': [alternativa_c, alternativa_d]}
         self.assertHttpCreated(self.api_client.post('/api/experimento/', format='json', data=experimento_2))
         self.assertEqual(Experimento.objects.count(), 2)
 
@@ -70,3 +81,17 @@ class ExperimentoResourceTest(ResourceTestCase):
         self.assertHttpAccepted(self.api_client.patch(self.detail_url, format='json', data=new_data))
         self.assertEqual(Experimento.objects.count(), 1)
         self.assertEqual(Experimento.objects.get(id=1).name, 'Experimento 3')
+
+    def test_put_list(self):
+        alternativa_x = {'url': 'testeX.com', 'peso': 3}
+        alternativa_z = {'url': 'testeZ.com', 'peso': 4}
+
+        original_data = self.deserialize(self.api_client.get(self.detail_url, format='json'))
+        new_data = original_data.copy()
+        new_data['name'] = 'Experimento X'
+        new_data['alternativas'] = [alternativa_x, alternativa_z]
+        new_data['slug'] = 'experimento_x'
+
+        self.assertHttpAccepted(self.api_client.patch(self.detail_url, format='json', data=new_data))
+        self.assertEqual(Experimento.objects.get(slug='experimento_x').name, 'Experimento X')
+        self.assertEqual(Experimento.objects.get(id=1).slug, 'experimento_x')
