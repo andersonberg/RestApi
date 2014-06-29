@@ -37,11 +37,13 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'tastypie',
-    'webserver.restapi'
+    'webserver.restapi',
+    'corsheaders',
 )
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -85,3 +87,5 @@ STATIC_URL = '/static/'
 
 #Serializa somente no formato json
 TASTYPIE_DEFAULT_FORMATS = ['json']
+
+CORS_ORIGIN_ALLOW_ALL = True
