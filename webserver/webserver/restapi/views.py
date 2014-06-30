@@ -4,20 +4,8 @@ from webserver.restapi.api import AlternativaResource
 from webserver.restapi.models import User, Alternativa, Experimento
 import random
 
-# def alternativas_list(self, request):
-#     alt = AlternativaResource()
-#     request_bundle = alt.build_bundle(request=request)
-#     queryset = alt.obj_get_list(request_bundle)
-#
-#     bundles = []
-#     for obj in queryset:
-#         bundle = alt.build_bundle(obj=obj, request=request)
-#         bundles.append(alt.full_dehydrate(bundle, for_list=True))
-#
-#     return bundles
-#
 
-
+#sorteio (escolha aleatória) de uma alternativa
 def pick_alternativa(experimento):
     alternativas = experimento.alternativas.all()
     choice = random.choice(alternativas)
@@ -26,11 +14,13 @@ def pick_alternativa(experimento):
     return choice
 
 
+#Busca a alternativa de um usuário ou sorteia uma nova
 def get_query_dict(request, slug):
     index = int(request.GET.get('id'))
     experimento = Experimento.objects.get(slug=slug)
     user = User.objects.get(id=index)
     ar = AlternativaResource()
+    #se o atributo estiver vazio, sorteia uma alternativa para o usuário
     if user.alternativa is None:
         sorteio = pick_alternativa(experimento)
         user.alternativa = sorteio
@@ -41,6 +31,7 @@ def get_query_dict(request, slug):
     return HttpResponse(ar.serialize(request, ar.full_dehydrate(ar_bundle), format='application/json'))
 
 
+#Lista os testes cadastrados e o número de sorteios para cada alternativa
 def dashboard(request):
     exp_list = Experimento.objects.all()
     context = {'exp_list': exp_list}

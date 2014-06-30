@@ -88,4 +88,5 @@ STATIC_URL = '/static/'
 #Serializa somente no formato json
 TASTYPIE_DEFAULT_FORMATS = ['json']
 
+#Permite que uma requisição seja feita através de um objeto XMLHttpRequest de javascript
 CORS_ORIGIN_ALLOW_ALL = True
