@@ -10,17 +10,35 @@ Através da criação de objetos 'Resource', o Tastypie implementa formas de obt
 Interagindo com a API
 ---------------------
 
-###Exemplo de POST:###
+Os exemplos a seguir usam o curl para realizar as requisições.
+
+###Criando um novo experimento###
 
 Para cadastrar um novo experimento e as respectivas alternativas execute o seguinte na linha de comando:
 
+<pre><code>
 curl --dump-header - -H "Content-Type: application/json" -X POST http://localhost:8000/api/experimento/ -d '{"name": "Experimento 1", "alternativas": [{"url": "testeA.com", "peso":1},{"url": "testeB.com", "peso": 2}]}'
+</code></pre>
+
+###Listando todos os experimentos###
+
+<pre><code>
+curl http://localhost:8001/api/experimento/
+</code></pre>
+
+###Listando os detalhes de um experimento específico###
+
+<pre><code>
+curl http://localhost:8001/api/experimento/experimento_1/
+</code></pre>
 
 ###Exemplo de GET:###
 
 Para requisitar um sorteio de um experimento para um usuário específico, o modelo de requisição http é o seguinte:
 
+<pre><code>
 http://localhost:8000/api/experimento/{slug_do_experimento}/user/?id={id_do_usuario}
+</code></pre>
 
 A adição de '/user/' à URL é para que não haja conflito com a url para fazer a requisição dos detalhes de um experimento específico.
 
