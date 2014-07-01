@@ -1,10 +1,34 @@
 RestApi
 =======
 
-Implementação de uma API Rest para testes A/B utilizando o Django com Tastypie.
+Implementação de uma API REST para testes A/B utilizando o Django com Tastypie.
 
 O Tastypie é um framework que provê uma API RESTful para Django. O Tastypie serializa a saída em diversos formatos, incluindo json, que utilizamos neste projeto.
 Através da criação de objetos 'Resource', o Tastypie implementa formas de obter dados (GET), criar (POST) e modificar (PUT/PATCH) dados e excluir dados (DELETE).
+
+Configurando o ambiente
+-----------------------
+
+Para iniciar a aplicação, é necessário ter o Python instalado e depois instalar o virtualenv, que cria um ambiente virtual diferente do ambiente local da máquina.
+Após a instalação do virtualenv, crie um novo ambiente virtual, com o nome 'venv':
+<pre><code>
+$ virtualenv venv
+</pre></code>
+
+Iniciando o servidor
+--------------------
+
+Para iniciar o servidor e a API, basta executar o script 'setup.sh':
+<pre><code>
+$ ./setup.sh
+</pre></code>
+
+Este script instala todas as dependências necessárias para rodar o servidor, incluindo o Django, o Tastypie e o Gunicorn.
+
+O Gunicorn é um servidor HTTP Python que suporta WSGI. Podemos configurar o gunicorn para trabalhar com vários workers, desta forma aumentando a disponibilidade da aplicação servida. Esta configuração pode ser observada no script, por exemplo:
+<pre><code>
+gunicorn webserver.wsgi:application --workers=5
+</pre></code>
 
 
 Interagindo com a API
