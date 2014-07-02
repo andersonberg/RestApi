@@ -57,13 +57,13 @@ class UserResourceTest(ResourceTestCase):
         new_data = original_data.copy()
         new_data['username'] = 'Anderson Dantas'
         new_data['alternativa'] = {'url': 'testeE.com', 'peso': 4}
-        new_data['slug'] = 'anderson_dantas'
 
         #realiza a requisição e verifica se foi aceita
         self.assertHttpAccepted(self.api_client.put(self.detail_url, format='json', data=new_data))
         #verifica as informações modificadas
         self.assertEqual(User.objects.get(id=1).username, 'Anderson Dantas')
-        self.assertEqual(User.objects.get(id=1).slug, 'anderson_dantas')
+        #o slug não é modificado, pois faz parte da url
+        self.assertEqual(User.objects.get(id=1).slug, 'anderson')
 
 
 class ExperimentoResourceTest(ResourceTestCase):
@@ -129,10 +129,10 @@ class ExperimentoResourceTest(ResourceTestCase):
         new_data = original_data.copy()
         new_data['name'] = 'Experimento X'
         new_data['alternativas'] = [alternativa_x, alternativa_z]
-        new_data['slug'] = 'experimento_x'
 
         #realiza a requisição e verifica se foi aceita
         self.assertHttpAccepted(self.api_client.put(self.detail_url, format='json', data=new_data))
         #verifica as informações modificadas
-        self.assertEqual(Experimento.objects.get(slug='experimento_x').name, 'Experimento X')
-        self.assertEqual(Experimento.objects.get(id=1).slug, 'experimento_x')
+        self.assertEqual(Experimento.objects.get(id=1).name, 'Experimento X')
+        #o slug não é modificado, pois faz parte da url
+        self.assertEqual(Experimento.objects.get(id=1).slug, 'experimento_1')
