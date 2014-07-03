@@ -92,4 +92,10 @@ Dashboard
 ---------
 
 É possível visualizar os testes cadastrados em cada experimento e quantas vezes cada testes foi sorteado através da seguinte url (considerando que o servidor está rodando em localhost na porta 8000):
-http://localhost:800/api/dashboard
+http://localhost:8000/api/dashboard
+
+
+Biblioteca javascript
+---------------------
+
+O diretório RestClient possui uma biblioteca javascript que solicita um sorteio para o servidor de forma assíncrona.
